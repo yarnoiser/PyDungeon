@@ -36,4 +36,3 @@ def d20():
 def d100():
   return d(100)
 
-
