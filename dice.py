@@ -12,27 +12,18 @@ def randbelow(exclusive_upper_bound):
 # End of python software foundation code
 # ====================================================================
 
-def d(n):
-  return randbelow(n) + 1
+class Die():
+  def __init__(self, sides):
+    self.sides = sides
 
-def d4():
-  return d(4)
+  def roll(self):
+    return randbelow(self.sides) + 1
 
-def d6():
-  return d(6)
-
-def d8():
-  return d(8)
-
-def d10():
-  return d(10)
-
-def d12():
-  return d(12)
-
-def d20():
-  return d(20)
-
-def d100():
-  return d(100)
+D4 = Die(4)
+D6 = Die(6)
+D8 = Die(8)
+D10 = Die(10)
+D12 = Die(12)
+D20 = Die(20)
+D100 = Die(100)
 
