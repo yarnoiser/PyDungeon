@@ -1,69 +1,32 @@
 from math import floor
 from random import shuffle
 from dice import *
+from combat import *
 
+# base class for D&D statistics
+# has maximum and current values, and a list of effects
+# classes using must call run_effects to decrement effect counters and remove
+# expired effects
 class stat():
   def __init__(self, val):
     self.val = val
     self.max = val
     self.effects = []
 
-  def __add__(self, val):
-    return self.val + val
-
-  def __sub__(self, val):
-    return self.val - val
-
-  def __mul__(self, val):
-    return self.val * val
-
-  def __matmul__(self, val):
-    return NotImplemented
-
-  def __truediv__(self, val):
-    return self.val // val
-
-  def __floordiv__(self, val):
-    return self.val // val
-
-  def __mod__(self, val):
-    return self.val % val
-
-  def __divmod__(self, val):
-    return self.val / val, self % val
-
-  def __pow__(self, val):
-    return self.val ** val
-
-  def __lshift__(self, val):
-    return self.val << val
-
-  def __rshift__(self, val):
-    return self.val >> val
-
-  def __and__(self, val):
-    return self.val and val
-
-  def __xor__(self, val):
-    return self.val ^ val
-
-  def __or__(self, val):
-    return self.val or val
-
-  def __iadd__(self, val):
-    if self + val > self.max:
+  def inc(self, val):
+    if self.val + val > self.max:
       self.val = self.max
     else:
-      self.val += val
+      self.val = self.val + val
 
-  def __isub__(self, val):
-    self += 0 - val
+  def dec(self, val):
+    self.inc(0 - val)
 
+  def inc_max(self, val):
+    self.max += val
 
-  def apply_effect(self, effect):
-    self.effects.append(effect)
-    self.max += effect.max
-    self.val += effect.value
+  def dec_max(self, val):
+    self.max -= val
 
   def run_effects(self):
     for effect in self.effects:
@@ -145,7 +108,7 @@ class Race():
 
 HUMAN = Race(30)
 
- Class():
+class Class():
   def __init__(self, hd):
     self.hd = hd
 
@@ -165,5 +128,4 @@ class Character(dict):
   def run_effects(self):
     for attr in self:
       attr.run_effects()
-
 
