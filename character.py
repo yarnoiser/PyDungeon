@@ -5,7 +5,7 @@ from combat import *
 
 # base class for D&D statistics
 # has maximum and current values, and a list of effects
-# classes using must call run_effects to decrement effect counters and remove
+# classes using must call runEffects to decrement effect counters and remove
 # expired effects
 class stat():
   def __init__(self, val):
@@ -22,13 +22,13 @@ class stat():
   def dec(self, val):
     self.inc(0 - val)
 
-  def inc_max(self, val):
+  def incMax(self, val):
     self.max += val
 
-  def dec_max(self, val):
+  def decMax(self, val):
     self.max -= val
 
-  def run_effects(self):
+  def runEffects(self):
     for effect in self.effects:
       effect.run()
       if effect.expired:
@@ -39,10 +39,10 @@ class stat():
           self.val -= effec.val
     self.effects = list(filter(lambda eff: not(eff.expired), self.effects))
 
-def ability_modifier(score):
+def abilityModifier(score):
   return int(floor((score - 10) / 2))
 
-def ability_roll():
+def abilityRoll():
   rolls = sorted([d6.roll(), D6.roll(), D6.roll(), D6.roll()])
   return sum(rolls[1:])
 
@@ -56,15 +56,15 @@ class Abilities(dict):
     self['wis'] = stat(wis)
     self['cha'] = stat(cha)
 
-  def run_effects(self):
+  def runEffects(self):
     for ability in self:
       ability.run_effects()
 
-def random_abilities():
+def RandomAbilities():
   return Abilities(ability_roll(), ability_roll(), ability_roll(),
                    ability_roll(), ability_roll(), ability_roll())
 
-def prioritized_abilities(priority):
+def PrioritizedAbilities(priority):
   abilities = Abilities(0, 0, 0, 0, 0, 0)
   rolls = list(reversed(sorted([ability_roll(), ability_roll(), ability_roll()
                          , ability_roll(), ability_roll(), ability_roll()])))
@@ -80,7 +80,7 @@ def prioritized_abilities(priority):
 
   return abilities
 
-def purchased_abilities(str, dex, con, int, wis, cha):
+def PurchasedAbilities(str, dex, con, int, wis, cha):
   purchaseTable = {-2: 8, 
                    -1: 9,
                     0: 10,
@@ -103,7 +103,7 @@ class Race():
   def __init__(self, speed):
     self.speed = stat(speed)
 
-  def run_effects():
+  def runEffects():
     self.speed.run_effects()
 
 HUMAN = Race(30)
@@ -112,7 +112,7 @@ class Class():
   def __init__(self, hd):
     self.hd = hd
 
-  def run_effects(self):
+  def runEffects(self):
     return None
 
 FIGHTER = Class(D10)
@@ -125,7 +125,7 @@ class Character(dict):
     self['inventory'] = []
     self['effects'] = []
 
-  def run_effects(self):
+  def runEffects(self):
     for attr in self:
       attr.run_effects()
 
